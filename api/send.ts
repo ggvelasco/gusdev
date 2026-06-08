@@ -2,15 +2,15 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-export default async function handler(req: Request) {
+export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
-    return new Response("Method not allowed", { status: 405 });
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const { name, email, message } = await req.json();
+  const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
-    return new Response("Missing fields", { status: 400 });
+    return res.status(400).json({ error: "Missing fields" });
   }
 
   const { error } = await resend.emails.send({
@@ -25,8 +25,8 @@ export default async function handler(req: Request) {
   });
 
   if (error) {
-    return new Response(JSON.stringify({ error }), { status: 500 });
+    return res.status(500).json({ error });
   }
 
-  return new Response(JSON.stringify({ success: true }), { status: 200 });
+  return res.status(200).json({ success: true });
 }
