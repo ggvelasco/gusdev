@@ -2,6 +2,8 @@ import ContactForm from "./contact/ContactForm";
 import ContactHeader from "./contact/ContactHeader";
 import ContactMarquee from "./contact/ContactMarquee";
 
+
+
 export default function Contact() {
     return (
         <footer
